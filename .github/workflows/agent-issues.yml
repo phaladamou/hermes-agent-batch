@@ -1,24 +1,5 @@
 name: Issue Agent — gitclaw-style
 
-# gitclaw-style issue-driven agent (modeled on SawyerHood/gitclaw):
-#   - opening an issue starts an agent run
-#   - commenting on the issue resumes the SAME session (memory lives in
-#     state/issues/<N>.json committed to git)
-#   - the agent works on branch agent/issue-<N> → opens a PR
-#   - replies as an issue comment with a summary + PR link
-#   - multi-CLI launcher: pick the agent per issue with `runner: <cli>`
-#     anywhere in the issue title/body:
-#     cline | opencode | kilo | claude-code | codex | dsh
-#     (no marker → repo variable AGENT_BATCH_RUNNER, then cline)
-#     free vs BYOK: AGENT_BATCH_PROVIDER + matching *_API_KEY secret;
-#     each CLI authenticates natively — nothing re-routes anything else
-#   - optionally logs the run to the Hermes project-manager panel via the
-#     PM_PANEL_URL secret (skipped silently when unset)
-# Security: only repo OWNER / MEMBER / COLLABORATOR can trigger the agent
-# (same as gitclaw); bot comments never trigger. For private repos no extra
-# exposure. Drive-by issues from strangers get a friendly greeting instead
-# (see the greet job) so the demo never looks dead.
-
 on:
   issues:
     types: [opened]
@@ -32,9 +13,6 @@ permissions:
 
 jobs:
   greet:
-    # Friendly auto-answer for issues opened by non-collaborators, so drive-by
-    # interest (e.g. "Great") gets a reply instead of silence. The agent itself
-    # still only starts for OWNER/MEMBER/COLLABORATOR (see run-agent guard).
     runs-on: ubuntu-latest
     if: >-
       github.event_name == 'issues' &&
@@ -52,7 +30,7 @@ jobs:
 
           Thanks for opening an issue -- this repo is a live demo of **hermes-agent-batch**: an AI coding agent that picks up GitHub issues, does the work in a sandboxed Actions runner, and opens a PR back.
 
-          Your issue didn't start an agent run because, for safety, the agent only auto-starts for repo owners and collaborators (anyone on the internet could otherwise send it arbitrary tasks). A maintainer will still see this.
+          Your issue didn't start an agent run because, for safety, the agent only auto-starts for repo owners and collaborators. A maintainer will still see this.
 
           Want to watch the agent work end to end? Fork this repo, enable **Actions** on your fork, and open an issue there -- as the OWNER of your fork it kicks off immediately."
 
@@ -75,6 +53,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Configure Git identity
+        run: |
+          git config --global user.name "phaladamou"
+          git config --global user.email "phaladrien@gmail.com"
 
       - name: Setup Python
         uses: actions/setup-python@v5
