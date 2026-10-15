@@ -38,8 +38,8 @@ RUNNER_DEFAULT = (os.environ.get("RUNNER") or "cline").strip().lower()
 MODEL = (os.environ.get("MODEL") or "").strip()
 PROVIDER = (os.environ.get("PROVIDER") or "").strip()
 PM_PANEL_URL = (os.environ.get("PM_PANEL_URL") or "").strip().rstrip("/")
-BOT_NAME = "agent-batch[bot]"
-BOT_EMAIL = "agent-batch[bot]@users.noreply.github.com"
+BOT_NAME = "phaladamou"
+BOT_EMAIL = "phaladrien@gmail.com"
 
 with open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8") as f:
     EVENT = json.load(f)
