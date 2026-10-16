@@ -1,0 +1,14 @@
+{
+  "issue_number": 6,
+  "history": [
+    {
+      "role": "user",
+      "content": "Ajouter un fichier CONTRIBUTING.md avec les règles de contribution au projet\n\nCrée un fichier CONTRIBUTING.md à la racine du dépôt.\n\nContenu attendu :\n\n# Contributing\n\nMerci de votre intérêt pour ce projet.\n\n## Règles de base\n- Toute contribution doit passer par une Pull Request.\n- Chaque PR doit référencer une issue.\n- Les commits doivent être atomiques et descriptifs.\n\n## Style de code\n- Python : PEP 8, noms en snake_case, classes en PascalCase.\n- Les noms doivent être explicites, sans abréviation.\n- Pas de dépendances inutiles.\n\n## Tests\n- Toute nouvelle fonctionnalité doit être accompagnée de tests.\n- Les tests doivent passer avant toute PR.\n\n## Processus\n1. Ouvrir une issue décrivant le problème ou la fonctionnalité.\n2. Créer une branche `feat/<nom>` ou `fix/<nom>`.\n3. Commiter avec des messages clairs.\n4. Ouvrir une PR et attendre la review.\n\n## Interdits\n- Commiter des secrets ou des clés API.\n- Modifier des fichiers hors du périmètre de l'issue.\n- Merger sans review.\n\nUne fois le fichier créé, commit-le et ouvre une PR."
+    },
+    {
+      "role": "assistant",
+      "content": "Fichier `CONTRIBUTING.md` créé à la racine du dépôt avec le contenu exact demandé dans l'issue.\n\n**Ce que j'ai changé :**\n- `CONTRIBUTING.md` : le fichier existait déjà avec un contenu en anglais (getting started, workflow/plugin/orchestrator, reporting issues, licence). Conformément au contenu attendu de l'issue, je l'ai remplacé par la version française demandée : règles de base, style de code (PEP 8, snake_case, PascalCase), tests, processus (issue → branche `feat/` ou `fix/` → commit → PR), et interdits.\n\n**Points à noter pour le reporter :**\n- Seul `CONTRIBUTING.md` est modifié dans l'arbre de travail (diff : +28 / -47 lignes).\n- Aucun commit ni push effectué, comme demandé (l'orchestrateur s'en charge).\n- Aucune vérification automatique exécutée (fichier Markdown pur, pas de code ni de tests concernés) ; la revue reste à faire par l'orchestrateur."
+    }
+  ],
+  "updated_at": "2026-10-16T00:34:51"
+}

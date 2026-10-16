@@ -1,47 +1,28 @@
-# Contributing to Agent Batch
+# Contributing
 
-Thanks for your interest in contributing! Here's how to get started.
+Merci de votre intérêt pour ce projet.
 
-## Getting Started
+## Règles de base
+- Toute contribution doit passer par une Pull Request.
+- Chaque PR doit référencer une issue.
+- Les commits doivent être atomiques et descriptifs.
 
-1. Fork the repository
-2. Clone your fork: `git clone https://github.com/<your-username>/agent-batch.git`
-3. Create a branch: `git checkout -b feature/your-feature`
-4. Make your changes
-5. Submit a pull request
+## Style de code
+- Python : PEP 8, noms en snake_case, classes en PascalCase.
+- Les noms doivent être explicites, sans abréviation.
+- Pas de dépendances inutiles.
 
-## Development
+## Tests
+- Toute nouvelle fonctionnalité doit être accompagnée de tests.
+- Les tests doivent passer avant toute PR.
 
-### Workflow file
-The core GitHub Actions workflow is at `.github/workflows/agent-batch.yml`. Test changes by dispatching the workflow on your fork.
+## Processus
+1. Ouvrir une issue décrivant le problème ou la fonctionnalité.
+2. Créer une branche `feat/<nom>` ou `fix/<nom>`.
+3. Commiter avec des messages clairs.
+4. Ouvrir une PR et attendre la review.
 
-### Plugin
-The Hermes plugin lives in `plugin/`. To test locally:
-
-```bash
-cp -r plugin/ ~/.hermes/plugins/agent-batch/
-cp plugin/desktop/plugin.js ~/.hermes/desktop-plugins/agent-batch/
-hermes plugins enable agent-batch
-hermes gateway restart
-```
-
-### Orchestrator
-`orchestrator.py` handles task phasing logic. Run it directly to test dependency analysis.
-
-## Pull Requests
-
-- Keep PRs focused on a single change
-- Describe what changed and why
-- Reference any related issues
-- Test your changes before submitting
-
-## Reporting Issues
-
-Open an issue with:
-- A clear description of the problem
-- Steps to reproduce
-- Expected vs actual behavior
-
-## License
-
-By contributing, you agree that your contributions will be licensed under the MIT License.
+## Interdits
+- Commiter des secrets ou des clés API.
+- Modifier des fichiers hors du périmètre de l'issue.
+- Merger sans review.
