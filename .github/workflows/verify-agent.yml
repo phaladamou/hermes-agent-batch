@@ -1,0 +1,61 @@
+name: Verify Agent Work
+
+on:
+  workflow_run:
+    workflows: ["Issue Agent — gitclaw-style"]
+    types: [completed]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f package.json ]; then npm install; fi
+
+      - name: Run tests
+        id: tests
+        run: |
+          if [ -f pytest.ini ] || [ -d tests/ ]; then
+            python -m pytest --tb=short || echo "TESTS_FAILED=true" >> $GITHUB_ENV
+          elif [ -f package.json ]; then
+            npm test || echo "TESTS_FAILED=true" >> $GITHUB_ENV
+          else
+            echo "Aucun test détecté."
+          fi
+
+      - name: Find the PR
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          BRANCH=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }} --jq '.head_branch')
+          PR_NUMBER=$(gh pr list --repo ${{ github.repository }} --head "$BRANCH" --json number --jq '.[0].number')
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+
+      - name: Comment result on PR
+        if: steps.pr.outputs.pr_number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ "${{ env.TESTS_FAILED }}" = "true" ]; then
+            gh pr comment ${{ steps.pr.outputs.pr_number }} --body "❌ **Vérification automatique : les tests ont échoué.** L'agent doit corriger."
+          else
+            gh pr comment ${{ steps.pr.outputs.pr_number }} --body "✅ **Vérification automatique : tout est bon.** Prêt à merger."
+          fi
